@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order-service
+  name: gateway-service
   labels:
-    app: order-service
+    app: gateway-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: order-service
+      app: gateway-service
   template:
     metadata:
       labels:
-        app: order-service
+        app: gateway-service
     spec:
       containers:
-      - name: order-service
-        image: your-docker-username/order-service:latest
+      - name: gateway-service
+        image: vipulsaw123/gateway-service:latest
         ports:
-        - containerPort: 3002
+        - containerPort: 3003
         resources:
           limits:
             cpu: "500m"
@@ -29,15 +29,21 @@ spec:
         env:
         - name: NODE_ENV
           value: "production"
+        - name: USER_SERVICE_URL
+          value: "http://user-service:3000"
+        - name: PRODUCT_SERVICE_URL
+          value: "http://product-service:3001"
+        - name: ORDER_SERVICE_URL
+          value: "http://order-service:3002"
         livenessProbe:
           httpGet:
             path: /health
-            port: 3002
+            port: 3003
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
-            port: 3002
+            port: 3003
           initialDelaySeconds: 5
           periodSeconds: 5

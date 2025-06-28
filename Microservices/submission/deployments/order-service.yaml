@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: order-service
   labels:
-    app: user-service
+    app: order-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: order-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: order-service
     spec:
       containers:
-      - name: user-service
-        image: your-docker-username/user-service:latest
+      - name: order-service
+        image: vipulsaw123/order-service:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 3002
         resources:
           limits:
             cpu: "500m"
@@ -32,12 +32,12 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 3000
+            port: 3002
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
-            port: 3000
+            port: 3002
           initialDelaySeconds: 5
           periodSeconds: 5
